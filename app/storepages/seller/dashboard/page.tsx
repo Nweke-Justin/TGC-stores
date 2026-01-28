@@ -26,18 +26,31 @@ export default function SellerDashboard() {
 
   const [user, setUser] = useState<any>(null);
 
-  // Check seller session
   useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "SIGNED_IN" && session) {
+          setUser(session.user);
+          setLoading(false);
+        } else if (event === "SIGNED_OUT") {
+          setUser(null);
+          setLoading(false);
+          router.push("/storepages/seller/login");
+        }
+      }
+    );
+
+    // Initial check
     supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) {
-        router.push("/seller/login");
-      } else {
+      if (data.user) {
         setUser(data.user);
       }
       setLoading(false);
-      console.log(data.user)
-
     });
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
   }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {

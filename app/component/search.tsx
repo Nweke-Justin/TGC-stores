@@ -1,31 +1,36 @@
 "use client";
 
 import { Search } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-interface HeaderSearchProps {
-  query: string;
-  setQuery: (value: string) => void;
-}
+export default function HeaderSearch() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-export default function HeaderSearch({ query, setQuery }: HeaderSearchProps) {
-  const handleSearch = () => {
-    // Nothing extra needed: filtering happens on the page via props
+  const query = searchParams.get("q") ?? "";
+
+  const handleChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (value.trim()) {
+      params.set("q", value);
+    } else {
+      params.delete("q");
+    }
+
+    router.push(`/storepages/home?${params.toString()}`);
   };
 
   return (
-    <div className="flex bg-white rounded-[15px] w-[100%] border-b-2 border-purple-500">
+    <div className="flex bg-white rounded-[15px] w-full border-b-2 border-purple-500">
       <input
         type="text"
         placeholder="Search products..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-        className="w-[100%] p-2 outline-none"
+        defaultValue={query}
+        onChange={(e) => handleChange(e.target.value)}
+        className="w-full p-2 outline-none"
       />
-      <button
-        onClick={handleSearch}
-        className="bg-purple-500 p-2 rounded-tr-[15px] rounded-br-[15px]"
-      >
+      <button className="bg-purple-500 p-2 rounded-tr-[15px] rounded-br-[15px]">
         <Search />
       </button>
     </div>

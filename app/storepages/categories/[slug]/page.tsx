@@ -29,8 +29,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     .join(" ");
 
   return (
-    <main className="max-w-7xl mx-auto px-6 py-14">
-      <h1 className="text-3xl font-bold mb-10">
+    <main className="max-w-7xl mx-auto px-6 py-4 lg:py-14">
+      <h1 className=" text-2xl lg:text-3xl text-center text-purple-700 font-bold mb-8">
         {categoryDisplayName}
       </h1>
 

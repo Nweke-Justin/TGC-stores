@@ -23,7 +23,7 @@ export default function SellerLogin() {
       return;
     }
 
-    router.push("/seller/dashboard");
+    router.push("/storepages/seller/dashboard");
   };
 
   return (

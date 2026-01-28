@@ -1,5 +1,5 @@
 "use client"
-import { Menu, Search } from "lucide-react";
+import { Menu} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -18,12 +18,36 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { motion } from "motion/react";
 import HeaderSearch from "./search";
-interface HeaderProps {
-  searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-}
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase/clients";
 
-function Header({ searchQuery, setSearchQuery }: HeaderProps) {
+
+function Header() {
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+    };
+
+    checkSession();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, []);
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
   return (
     <motion.div
       initial={{ opacity: 1, scale: 1, y: -100 }}
@@ -43,7 +67,7 @@ function Header({ searchQuery, setSearchQuery }: HeaderProps) {
         </Link>
 
         <div className="flex bg-white rounded-[15px] w-[65vw] lg:w-[40vw] xl:w-[65vw] border-b-2 border-purple-500 justify-between">
-          <HeaderSearch query={searchQuery} setQuery={setSearchQuery} />
+          <HeaderSearch />
         </div>
         {/* desktop view */}
         <div className=" hidden lg:flex space-x-[15px] text-purple-900 font-semibold">
@@ -103,12 +127,22 @@ function Header({ searchQuery, setSearchQuery }: HeaderProps) {
             </Link>
           </div>
           <div>
-            <Link
-              href="/storepages/seller/login"
-              className="hover:bg-purple-500  bg-purple-600 text-white rounded-full p-2 px-4"
-            >
-              Login
-            </Link>
+            {user ? (
+              <Link
+                href={"/storepages/home"}
+                onClick={handleLogout}
+                className="hover:bg-purple-500  bg-purple-600 text-white rounded-full p-2 px-3 text-[14px]"
+              >
+                Logout
+              </Link>
+            ) : (
+              <Link
+                href="/storepages/seller/login"
+                className="hover:bg-purple-500  bg-purple-600 text-white rounded-full p-2 px-3 text-[14px]"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
         <div className="lg:hidden">
@@ -119,7 +153,35 @@ function Header({ searchQuery, setSearchQuery }: HeaderProps) {
                 Welcome To TGC Stores!!!
               </div>
               <div className="text-purple-900 font-semibold">
-                <div className="hover:text-purple-500 hover:cursor-pointer p-2  border-b-2 border-b-purple-700"> Categories</div>
+                <div className="hover:text-purple-500 hover:cursor-pointer p-2  border-b-2 border-b-purple-700">  <DropdownMenu>
+            <DropdownMenuTrigger className="hover:text-purple-500 hover:cursor-pointer outline-none">
+              Categories
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuGroup>
+                <DropdownMenuItem className="focus:bg-purple-500 focus:text-white text-purple-900 cursor-pointer">
+                  <Link href={"/storepages/categories/laptops"}>
+                    Laptop
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="focus:bg-purple-500 focus:text-white text-purple-900 cursor-pointer">
+                  <Link href={"/storepages/categories/phones"}>
+                    Phone
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="focus:bg-purple-500 focus:text-white cursor-pointer text-purple-900">
+                  <Link href={"/storepages/categories/laptop-accessories"}>
+                    Laptop Accessories
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="focus:bg-purple-500 focus:text-white cursor-pointer text-purple-900">
+                  <Link href={"/storepages/categories/phone-accessories"}>
+                    Phone Accessories
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu></div>
                 <div className="p-2  border-b-2 border-b-purple-700">
                   <Link
                     href={"/storepages/home"}
@@ -145,12 +207,22 @@ function Header({ searchQuery, setSearchQuery }: HeaderProps) {
                   </Link>
                 </div>
                 <div className="p-2  border-b-2 border-b-purple-700">
-                  <Link
-                    href="/storepages/seller/login"
-                    className="hover:text-purple-500"
-                  >
-                    Login
-                  </Link>
+                  {user ? (
+                    <Link
+                    href={"/storepages/home"}
+                      onClick={handleLogout}
+                      className="hover:text-purple-500 text-[14px]"
+                    >
+                      Logout
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/storepages/seller/login"
+                      className="hover:text-purple-500"
+                    >
+                      Login
+                    </Link>
+                  )}
                 </div>
                 <div className="mt-[20vw] text-center text-purple-400">
                   <h3 className="text-bold text-[20px]"> TGC STORES</h3>
