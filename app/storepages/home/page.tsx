@@ -40,7 +40,7 @@ export default async function StorefrontPage({
       {products.length === 0 ? (
         <p className="text-gray-600 text-center">No products found.</p>
       ) : (
-        <section className="grid gap-6 grid-cols-2 lg:grid-cols-4">
+        <section className="grid gap-2 md:gap-6 grid-cols-2 lg:grid-cols-4">
           {products.map((product) => {
             const whatsappNumber = "2348026958471";
 
@@ -60,7 +60,7 @@ ${product.price ? `Price: ₦${Number(product.price).toLocaleString()}` : ""}
             return (
               <div
                 key={product.id}
-                className="border rounded-lg p-1 lg:p-5 flex flex-col bg-white"
+                className="border text-[10px] lg:text-[14px] rounded-lg p-1 lg:p-5 flex flex-col bg-white"
               >
                 {product.image_url && (
                   <img
@@ -70,30 +70,30 @@ ${product.price ? `Price: ₦${Number(product.price).toLocaleString()}` : ""}
                   />
                 )}
 
-                <h2 className=" text-[15px] lg:text-xl text-center font-semibold  lg:mb-2">
+                <h2 className="  lg:text-xl text-center font-semibold  lg:mb-2">
                   {product.name}
                 </h2>
 
                 {product.description && (
-                  <p className="text-gray-600 text-[14px] lg:mb-4">
+                  <p className="text-gray-600 lg:mb-4">
                     {product.description}
                   </p>
                 )}
 
                 {product.price && (
-                  <p className="text-[14px] lg:text-lg font-medium lg:mb-2">
+                  <p className=" lg:text-lg font-medium lg:mb-2">
                     ₦{Number(product.price).toLocaleString()}
                   </p>
                 )}
 
-                <p className="text-sm text-gray-500 lg:mb-4">
+                <p className=" text-gray-500 lg:mb-4">
                   <span className="font-bold">In stock:</span>{" "}
                   {product.quantity}
                 </p>
 
                 <Link
                   href={`/storepages/seller/products/${product.id}`}
-                  className="text-purple-600 font-medium lg:mb-3 text-[14px] lg:text-[16px]"
+                  className="text-purple-600 font-medium lg:mb-3 lg:text-[16px]"
                 >
                   View Product Details
                 </Link>
@@ -102,7 +102,7 @@ ${product.price ? `Price: ₦${Number(product.price).toLocaleString()}` : ""}
                   href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-auto inline-block text-center bg-black text-white py-2 px-0.5 rounded-md hover:bg-purple-700 transition-colors duration-200 text-[14px] lg:text-[16px]"
+                  className="mt-auto inline-block text-center bg-black text-white py-2 px-0.5 rounded-md hover:bg-purple-700 transition-colors duration-200 lg:text-[16px]"
                 >
                   Contact on WhatsApp
                 </a>

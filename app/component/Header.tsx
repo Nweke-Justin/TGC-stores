@@ -66,7 +66,7 @@ function Header() {
           />
         </Link>
 
-        <div className="flex bg-white rounded-[15px] w-[65vw] lg:w-[40vw] xl:w-[65vw] border-b-2 border-purple-500 justify-between">
+        <div className="flex bg-white rounded-[15px] w-[65vw] lg:w-[40vw] xl:w-[50vw] border-b-2 border-purple-500 justify-between">
           <HeaderSearch />
         </div>
         {/* desktop view */}
