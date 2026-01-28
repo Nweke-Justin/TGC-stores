@@ -4,6 +4,7 @@ function page() {
     return (
         <div>
             <main className="max-w-5xl mx-auto px-6 py-4 lg:py-14">
+                <div>
                 <h1 className=" text-2xl lg:text-4xl font-bold mb-8 text-center text-purple-900">
                     About Total Grace Communication
                 </h1>
@@ -28,7 +29,7 @@ function page() {
                         receive accurate information and dependable service.
                     </p>
                 </section>
-
+                </div>
                 <section className="mt-10">
                     <h2 className="text-2xl font-semibold mb-4 text-center text-purple-900">What We Offer</h2>
                     <p className="text-gray-700 leading-relaxed">

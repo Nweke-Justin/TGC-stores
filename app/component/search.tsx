@@ -1,24 +1,21 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function HeaderSearch() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const [query, setQuery] = useState("");
 
-  const query = searchParams.get("q") ?? "";
-
-  const handleChange = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+  const handleSearch = (value: string) => {
+    setQuery(value);
 
     if (value.trim()) {
-      params.set("q", value);
+      router.push(`/storepages/home?q=${encodeURIComponent(value)}`);
     } else {
-      params.delete("q");
+      router.push(`/storepages/home`);
     }
-
-    router.push(`/storepages/home?${params.toString()}`);
   };
 
   return (
@@ -26,8 +23,8 @@ export default function HeaderSearch() {
       <input
         type="text"
         placeholder="Search products..."
-        defaultValue={query}
-        onChange={(e) => handleChange(e.target.value)}
+        value={query}
+        onChange={(e) => handleSearch(e.target.value)}
         className="w-full p-2 outline-none"
       />
       <button className="bg-purple-500 p-2 rounded-tr-[15px] rounded-br-[15px]">
